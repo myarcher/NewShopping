@@ -26,17 +26,28 @@ class mainfra_head_v : _LinearLayout {
     }
 
     init {
-        
+
     }
 
     private fun initview() {
         lparams(width = matchParent, height = matchParent)
         backgroundColor = resources.getColor(R.color.main_color)
         orientation = VERTICAL
-        main_four_head_banner = BannerLayout(context) {
+        main_four_head_banner = BannerLayout(context){
             visibility = View.VISIBLE
-         
-        }.lparams(width = dip(480), height = dip(240)).inits(BannerLayout.Shape.oval)
+            autoPlayDuration = 5000
+            indicatorMargin=dip(8)
+            indicatorPosition=BannerLayout.Position.centerBottom
+            indicatorShape=BannerLayout.Shape.oval
+            indicatorSpace=dip(5)
+            scrollDuration=1100
+            selectedIndicatorColor=resources.getColor(R.color.white_color)
+            selectedIndicatorHeight=dip(8)
+            selectedIndicatorWidth=dip(8)
+            unSelectedIndicatorColor=resources.getColor(R.color.gray_color)
+            unSelectedIndicatorHeight=dip(8)
+            unSelectedIndicatorWidth=dip(8)
+        }.lparams(width = dip(480), height = dip(240))
         main_four_head_title_img = imageView {
             backgroundColor = Color.WHITE
         }.lparams(width = matchParent, height = dip(177)) {
