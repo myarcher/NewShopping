@@ -40,24 +40,24 @@ open class BannerLayout : _RelativeLayout {
     private val WHAT_AUTO_PLAY: Int
     private var isAutoPlay: Boolean = false
     private var itemCount: Int = 0
-    private var selectedIndicatorColor: Int = 0
-    private var unSelectedIndicatorColor: Int = 0
-    private var indicatorShape: BannerLayout.Shape? = null
-    private var selectedIndicatorHeight: Int = 0
-    private var selectedIndicatorWidth: Int = 0
-    private var unSelectedIndicatorHeight: Int = 0
-    private var unSelectedIndicatorWidth: Int = 0
-    private var indicatorPosition: BannerLayout.Position? = null
+    public var selectedIndicatorColor: Int = 0
+    public var unSelectedIndicatorColor: Int = 0
+    public var indicatorShape: BannerLayout.Shape? = null
+    public var selectedIndicatorHeight: Int = 0
+    public var selectedIndicatorWidth: Int = 0
+    public var unSelectedIndicatorHeight: Int = 0
+    public var unSelectedIndicatorWidth: Int = 0
+    public var indicatorPosition: BannerLayout.Position? = null
     public var autoPlayDuration: Int = 0
-    private var scrollDuration: Int = 0
-    private var indicatorSpace: Int = 0
-    private var indicatorMargin: Int = 0
+    public var scrollDuration: Int = 0
+    public var indicatorSpace: Int = 0
+    public var indicatorMargin: Int = 0
     private var currentPosition: Int = 0
     private var imageLoader: BannerLayout.ImageLoader? = null
     private var onBannerItemClickListener: BannerLayout.OnBannerItemClickListener? = null
     private var handlers: Handler? = null
 
-    constructor(context: Context, init: () -> Unit) : super(context) {
+    constructor(context: Context, ints: BannerLayout.() -> Unit) : super(context) {
         this.WHAT_AUTO_PLAY = 1000
         this.isAutoPlay = true
         this.selectedIndicatorColor = -65536;
@@ -82,12 +82,15 @@ open class BannerLayout : _RelativeLayout {
                 return false
             }
         })
-       
+        ints()
     }
 
+    init {
+        inits()
+    }
 
-    public fun inits(spe:Shape=Shape.oval):BannerLayout{
-        val shape =spe.ordinal
+    public fun inits() {
+        val shape = indicatorShape
         val position = BannerLayout.Shape.values()
         val unSelectedLayerDrawable = position.size
 
@@ -95,20 +98,20 @@ open class BannerLayout : _RelativeLayout {
         selectedLayerDrawable = 0
         while (selectedLayerDrawable < unSelectedLayerDrawable) {
             val unSelectedGradientDrawable = position[selectedLayerDrawable]
-            if (unSelectedGradientDrawable.ordinal == shape) {
+            if (unSelectedGradientDrawable.ordinal == shape!!.ordinal) {
                 this.indicatorShape = unSelectedGradientDrawable
                 break
             }
             ++selectedLayerDrawable
         }
 
-        val var10 = BannerLayout.Position.centerBottom.ordinal
+        val var10 = indicatorPosition
         val var11 = BannerLayout.Position.values()
         selectedLayerDrawable = var11.size
 
         for (var14 in 0 until selectedLayerDrawable) {
             val selectedGradientDrawable = var11[var14]
-            if (var10 == selectedGradientDrawable.ordinal) {
+            if (var10!!.ordinal == selectedGradientDrawable.ordinal) {
                 this.indicatorPosition = selectedGradientDrawable
             }
         }
@@ -134,7 +137,6 @@ open class BannerLayout : _RelativeLayout {
         var16.setSize(this.selectedIndicatorWidth, this.selectedIndicatorHeight)
         val var13 = LayerDrawable(arrayOf<Drawable>(var16))
         this.selectedDrawable = var13
-        return this
     }
 
     public fun setViewUrls(urls: List<String>) {
@@ -422,7 +424,7 @@ open class BannerLayout : _RelativeLayout {
         fun onItemClick(var1: Int)
     }
 
-    private enum class Position constructor() {
+    enum class Position constructor() {
         centerBottom,
         rightBottom,
         leftBottom,
